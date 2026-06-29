@@ -44,13 +44,7 @@ jobs:
           export CC=emcc
           export CXX=em++
           
-          nim c \
-            --cpu:wasm32 \
-            -d:emscripten \
-            --cc:clang \
-            --clang.exe=emcc \
-            --clang.linkerexe=emcc \
-            src/main.nim
+          nim c -f -d:danger --opt:size -d:emscripten --passC:"-O3" src/main.nim
             
       - name: Upload Web Artifact
         uses: actions/upload-artifact@v4
