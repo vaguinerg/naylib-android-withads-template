@@ -45,7 +45,7 @@ jobs:
           export CXX=em++
           
           nim c \
-            --cpu:i386 \
+            --cpu:wasm32 \
             --cc:clang \
             --clang.exe=emcc \
             --clang.linkerexe=emcc \
