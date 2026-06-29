@@ -1,4 +1,13 @@
 import os
+
+--define:noSignalHandler
+--define:danger
+--define:strip
+--define:useMalloc
+--panics:on
+--boundChecks:off
+--opt:size
+
 const AndroidApiVersion {.intdefine.} = 33
 const AndroidNdk {.strdefine.} = "/opt/android-ndk"
 when buildOS == "windows":
@@ -28,11 +37,7 @@ when defined(android):
   const AndroidTarget = AndroidTriple & $AndroidApiVersion
 
   switch("clang.path", AndroidToolchain / "bin")
-  # switch("clang.exe", AndroidTarget & "-clang")
-  # switch("clang.linkerexe", AndroidTarget & "-clang")
   switch("clang.cpp.path", AndroidToolchain / "bin")
-  # switch("clang.cpp.exe", AndroidTarget & "-clang++")
-  # switch("clang.cpp.linkerexe", AndroidTarget & "-clang++")
   switch("clang.options.always", "--target=" & AndroidTarget & " --sysroot=" & AndroidSysroot &
          " -I" & AndroidSysroot / "usr/include" &
          " -I" & AndroidSysroot / "usr/include" / AndroidTriple & " " & AndroidAbiFlags &
@@ -40,6 +45,17 @@ when defined(android):
   switch("clang.options.linker", "--target=" & AndroidTarget & " -shared " & AndroidAbiFlags)
 
   --define:androidNDK
-  # --mm:orc
-  --panics:on # not strictly needed but good to have
-  --define:noSignalHandler
+
+elif defined(emscripten):
+  --define:GraphicsApiOpenGlEs2
+  --os:linux
+  --cpu:wasm32
+  --cc:clang
+  --clang.exe:emcc
+  --clang.linkerexe:emcc
+  --clang.cpp.exe:emcc
+  --clang.cpp.linkerexe:emcc
+  --threads:on
+  --define:NaylibWebAsyncify
+  --passL:"-o web/index.html"
+  --passL:"--shell-file web/minshell.html"
