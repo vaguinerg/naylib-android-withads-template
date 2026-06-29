@@ -42,7 +42,7 @@ jobs:
           nimble install naylib nimja spacy https://github.com/planetis-m/naygui -y
           cd "$OLDPWD"
 
-          nim c -f -d:danger --opt:size -d:emscripten --passC:"-msimd128 -O3 -mavx" src/main.nim
+          nim c -f -d:danger --opt:size -d:emscripten --passC:"-O3 -mavx" src/main.nim
 
       - name: Upload Web Artifact
         uses: actions/upload-artifact@v4
