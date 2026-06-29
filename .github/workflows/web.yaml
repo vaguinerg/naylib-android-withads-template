@@ -50,8 +50,7 @@ jobs:
             --clang.exe=emcc \
             --clang.linkerexe=emcc \
             src/main.nim
-          nim c -f -d:danger --opt:size -d:emscripten --passC:"-O3 -mavx" src/main.nim
-
+            
       - name: Upload Web Artifact
         uses: actions/upload-artifact@v4
         with:
